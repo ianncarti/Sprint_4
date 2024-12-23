@@ -97,11 +97,14 @@ class TestBooksCollector:
         # устанавливаем каждой созданной книге жанр
         books_collector.set_book_genre(name, genre)
 
-        # создали переменную, в которую сохраним отфильтрованный словарь с книгами для детей
+        # создали переменную, в которую сохраним отфильтрованный список с книгами для детей
         result = books_collector.get_books_for_children()
 
-        # проверяем, что книга с жаном "Ужасы" не попала в список с книгами для детей
-        assert 'Гордость и предубеждение и зомби' not in result
+        # проверяем, что книга с жанром "Ужасы" не попала в список с книгами для детей
+        if genre == 'Ужасы':
+            assert name not in result
+        elif genre == 'Комедии':
+            assert name in result
 
     def test_add_book_in_favorites_add_existing_book(self, books_collector):
         # добавили новую книгу
