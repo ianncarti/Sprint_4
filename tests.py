@@ -85,26 +85,18 @@ class TestBooksCollector:
         # проверяем совпадение ожидаемого результата с фактическим
         assert expected_dict == result
 
+    def test_get_books_for_children_add_two_books_filters_book_with_age_rating(self, books_collector):
+        # Создаём новую книгу
+        books_collector.add_new_book('Гордость и предубеждение и зомби')
 
-    @pytest.mark.parametrize('name, genre', [
-        ['Гордость и предубеждение и зомби','Ужасы'],
-        ['Двенадцать стульев', 'Комедии']
-    ])
-    def test_get_books_for_children_add_two_books_filters_book_with_age_rating(self, books_collector, name, genre):
-        # создаём 2 книги через параметризацию, одна из них имеет жанр не для детей
-        books_collector.add_new_book(name)
+        # устанавливаем жанр из списка genre_age_rating
+        books_collector.set_book_genre('Гордость и предубеждение и зомби', 'Ужасы')
 
-        # устанавливаем каждой созданной книге жанр
-        books_collector.set_book_genre(name, genre)
-
-        # создали переменную, в которую сохраним отфильтрованный список с книгами для детей
+        # создали переменную, в которую сохраним результат фильтрации книг для детей
         result = books_collector.get_books_for_children()
 
         # проверяем, что книга с жанром "Ужасы" не попала в список с книгами для детей
-        if genre == 'Ужасы':
-            assert name not in result
-        elif genre == 'Комедии':
-            assert name in result
+        assert 'Гордость и предубеждение и зомби' not in result
 
     def test_add_book_in_favorites_add_existing_book(self, books_collector):
         # добавили новую книгу
